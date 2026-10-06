@@ -1,0 +1,530 @@
+/* 
+ * The Last Light - Graphic Novel Comic Stylesheet & Web Showcase
+ * 100-Hour Indie Connect Game Jam
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:ital,wght@0,400;0,700;1,400&family=Impact&display=swap');
+
+:root {
+    --comic-bg: #f5eedc;
+    --comic-ink: #111420;
+    --comic-yellow: #ffea00;
+    --comic-amber: #f77f00;
+    --comic-red: #d62828;
+    --comic-blue: #0077b6;
+    --comic-cyan: #06d6a0;
+    --comic-card-bg: #181b29;
+    --border-thick: 4px solid #111420;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #0b0d14;
+    background-image: radial-gradient(#1c2237 15%, transparent 16%);
+    background-size: 24px 24px;
+    font-family: 'Comic Neue', cursive, sans-serif;
+    color: #edf2f4;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 10px 40px;
+}
+
+/* Header Banner for Judges */
+.web-hero-banner {
+    max-width: 1020px;
+    width: 100%;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #141724;
+    border: 3px solid var(--comic-yellow);
+    box-shadow: 4px 4px 0 #000;
+    padding: 12px 20px;
+    border-radius: 6px;
+}
+
+.web-hero-title {
+    font-family: 'Bangers', cursive;
+    font-size: 28px;
+    color: var(--comic-yellow);
+    letter-spacing: 1.5px;
+    text-shadow: 2px 2px 0 #000;
+}
+
+.web-hero-badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.jam-badge {
+    background: var(--comic-red);
+    color: #fff;
+    font-family: 'Impact', sans-serif;
+    font-size: 13px;
+    padding: 4px 10px;
+    border-radius: 3px;
+    letter-spacing: 0.5px;
+    border: 1px solid #000;
+}
+
+.jam-badge.online {
+    background: #06d6a0;
+    color: #111420;
+}
+
+/* Comic Book Desk Container */
+.comic-book-wrapper {
+    position: relative;
+    background: #eae0d5;
+    padding: 16px;
+    border-radius: 6px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 0 8px #111420;
+    max-width: 1000px;
+    width: 100%;
+    margin: 0 auto 30px;
+}
+
+/* Comic Page Header Bar */
+.comic-header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #111420;
+    color: #ffffff;
+    padding: 8px 14px;
+    border: 3px solid #111420;
+    margin-bottom: 10px;
+}
+
+.comic-series-title {
+    font-family: 'Bangers', cursive;
+    font-size: 22px;
+    letter-spacing: 1px;
+    color: var(--comic-yellow);
+    text-shadow: 2px 2px 0 #000;
+}
+
+.comic-hud-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff3b0;
+    border: 3px solid #111420;
+    padding: 6px 12px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #111420;
+}
+
+.hud-chapter {
+    font-family: 'Impact', sans-serif;
+    color: #111420;
+    font-size: 15px;
+}
+
+.hud-objective {
+    color: #b7094c;
+}
+
+/* Game Canvas Container */
+.canvas-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background: #000;
+    overflow: hidden;
+}
+
+#gameCanvas {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    background: #f4ede2;
+    border: 4px solid #111420;
+    box-shadow: 4px 4px 0 #000000;
+    cursor: crosshair;
+}
+
+/* Comic Buttons */
+.comic-btn {
+    font-family: 'Bangers', cursive;
+    font-size: 17px;
+    letter-spacing: 1px;
+    padding: 6px 16px;
+    background: var(--comic-yellow);
+    color: #111420;
+    border: 3px solid #111420;
+    box-shadow: 3px 3px 0 #111420;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.comic-btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 #111420;
+    background: #ffbe0b;
+}
+
+.comic-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 #111420;
+}
+
+.comic-btn-secondary {
+    background: #e0fbfc;
+}
+
+/* Overlays */
+.overlay-screen {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    background: rgba(17, 20, 32, 0.95);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    z-index: 100;
+    border: 4px solid var(--comic-yellow);
+    box-shadow: 0 0 20px rgba(0,0,0,0.8);
+    color: #ffffff;
+    text-align: center;
+}
+
+.overlay-screen.hidden {
+    display: none !important;
+}
+
+/* Title Screen */
+.title-banner {
+    font-family: 'Bangers', cursive;
+    font-size: 64px;
+    color: var(--comic-yellow);
+    text-shadow: 4px 4px 0 #d62828, 8px 8px 0 #000000;
+    letter-spacing: 3px;
+    margin-bottom: 6px;
+    transform: rotate(-1.5deg);
+}
+
+.title-subheading {
+    font-family: 'Comic Neue', cursive;
+    font-size: 18px;
+    font-weight: 700;
+    color: #e0fbfc;
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
+}
+
+.theme-pill-container {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.theme-pill {
+    background: #2b2d42;
+    border: 2px solid var(--comic-yellow);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.theme-pill span {
+    color: var(--comic-yellow);
+}
+
+.instructions-card {
+    background: #1f2233;
+    border: 3px solid #fff;
+    padding: 16px 24px;
+    max-width: 640px;
+    margin-bottom: 24px;
+    text-align: left;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.instructions-card h3 {
+    font-family: 'Bangers', cursive;
+    font-size: 20px;
+    color: var(--comic-yellow);
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+}
+
+.instructions-card ul {
+    list-style-type: none;
+}
+
+.instructions-card li {
+    margin-bottom: 6px;
+}
+
+.key-tag {
+    background: #ffd166;
+    color: #111420;
+    font-family: 'Impact', sans-serif;
+    font-size: 12px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid #000;
+}
+
+.team-roster {
+    margin-top: 14px;
+    font-size: 12px;
+    color: #adb5bd;
+}
+
+/* Modal Choice Card */
+.choice-container {
+    display: flex;
+    gap: 24px;
+    margin-top: 24px;
+}
+
+.choice-card {
+    background: #1f2233;
+    border: 4px solid #fff;
+    padding: 20px;
+    width: 320px;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 5px 5px 0 #000;
+}
+
+.choice-card.card-dawn {
+    border-color: #ffd166;
+}
+
+.choice-card.card-arc {
+    border-color: #06d6a0;
+}
+
+.choice-card h3 {
+    font-family: 'Bangers', cursive;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.choice-card.card-dawn h3 { color: #ffd166; }
+.choice-card.card-arc h3 { color: #06d6a0; }
+
+.choice-card p {
+    font-size: 14px;
+    line-height: 1.4;
+    margin-bottom: 18px;
+    color: #edf2f4;
+}
+
+/* Ending Screen */
+.ending-box {
+    background: #1c1f2e;
+    border: 4px solid var(--comic-yellow);
+    padding: 30px;
+    max-width: 680px;
+    box-shadow: 8px 8px 0 #000000;
+}
+
+.ending-title {
+    font-family: 'Bangers', cursive;
+    font-size: 44px;
+    color: var(--comic-yellow);
+    text-shadow: 3px 3px 0 #000;
+    margin-bottom: 16px;
+}
+
+.ending-text {
+    font-size: 17px;
+    line-height: 1.6;
+    color: #ffffff;
+    margin-bottom: 24px;
+}
+
+.ending-subtext {
+    font-style: italic;
+    color: #06d6a0;
+    font-size: 15px;
+    margin-bottom: 24px;
+}
+
+/* Footer Credits Bar */
+.comic-footer-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #495057;
+}
+
+.comic-footer-bar a {
+    color: #111420;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+/* =========================================
+   JUDGES & WEB SHOWCASE PORTAL SECTIONS
+   ========================================= */
+
+.judge-portal {
+    max-width: 1020px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.judge-nav-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    font-family: 'Bangers', cursive;
+    font-size: 18px;
+    letter-spacing: 1px;
+    padding: 8px 18px;
+    background: #1c1f2e;
+    color: #adb5bd;
+    border: 2px solid #2b2d42;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.tab-btn:hover {
+    color: #ffffff;
+    background: #2b2d42;
+    border-color: var(--comic-yellow);
+}
+
+.tab-btn.active {
+    background: var(--comic-yellow);
+    color: #111420;
+    border-color: #111420;
+    box-shadow: 3px 3px 0 #000;
+}
+
+.portal-content-card {
+    background: var(--comic-card-bg);
+    border: 3px solid #2b2d42;
+    border-radius: 6px;
+    padding: 24px;
+    box-shadow: 4px 4px 0 #000;
+    margin-bottom: 20px;
+}
+
+.portal-content-card.hidden {
+    display: none;
+}
+
+.portal-content-card h2 {
+    font-family: 'Bangers', cursive;
+    font-size: 28px;
+    color: var(--comic-yellow);
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.portal-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 18px;
+    margin-top: 14px;
+}
+
+.theme-card {
+    background: #23273c;
+    border: 2px solid #3d425f;
+    border-radius: 6px;
+    padding: 18px;
+    box-shadow: 3px 3px 0 #000;
+}
+
+.theme-card h3 {
+    font-family: 'Bangers', cursive;
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+
+.theme-card.comic h3 { color: #ffd166; }
+.theme-card.light h3 { color: #06d6a0; }
+.theme-card.twist h3 { color: #ef476f; }
+
+.theme-card p {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #d1d5db;
+}
+
+/* Team Table */
+.team-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.team-table th, .team-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid #2b2d42;
+    font-size: 14px;
+}
+
+.team-table th {
+    background: #141724;
+    color: var(--comic-yellow);
+    font-family: 'Impact', sans-serif;
+    letter-spacing: 0.5px;
+}
+
+.team-table td strong {
+    color: #ffffff;
+}
+
+.download-pill-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #06d6a0;
+    color: #111420;
+    font-family: 'Impact', sans-serif;
+    font-size: 15px;
+    padding: 8px 18px;
+    border-radius: 4px;
+    text-decoration: none;
+    border: 2px solid #000;
+    box-shadow: 3px 3px 0 #000;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.download-pill-btn:hover {
+    background: #2ec4b6;
+    transform: translate(-1px, -1px);
+}
