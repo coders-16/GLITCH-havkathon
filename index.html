@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE LAST LIGHT | 100-Hour Indie Connect Game Jam (Live Web Build)</title>
+    <meta name="description" content="A comic you can play, light you can manipulate, and a story you can't trust. 100-Hour Indie Connect Game Jam entry.">
+    <link rel="stylesheet" href="css/comic.css">
+</head>
+<body>
+
+    <!-- TOP HEADER FOR JUDGES & VISITORS -->
+    <header class="web-hero-banner">
+        <div>
+            <div class="web-hero-title">⚡ THE LAST LIGHT</div>
+            <div style="font-size: 13px; color: #a8dadc; margin-top: 2px;">
+                100-Hour Indie Connect Game Jam • Official Team-3 Submission
+            </div>
+        </div>
+        <div class="web-hero-badges">
+            <span class="jam-badge">THEME: COMIC</span>
+            <span class="jam-badge">THEME: LIGHT</span>
+            <span class="jam-badge">THEME: TWIST</span>
+            <span class="jam-badge online">● LIVE WEB BUILD</span>
+        </div>
+    </header>
+
+    <!-- MAIN GAMEPLAY CANVAS WRAPPER -->
+    <main class="comic-book-wrapper">
+        <!-- Comic Page Top Header Strip -->
+        <header class="comic-header-bar">
+            <div class="comic-series-title">THE LAST LIGHT • ISSUE #1</div>
+            <div style="display: flex; gap: 8px;">
+                <button id="fullscreenBtn" class="comic-btn comic-btn-secondary" style="font-size: 13px; padding: 4px 10px;">⛶ FULLSCREEN</button>
+                <button id="muteBtn" class="comic-btn comic-btn-secondary" style="font-size: 13px; padding: 4px 10px;">🔊 MUTE</button>
+                <button id="restartBtn" class="comic-btn comic-btn-secondary" style="font-size: 13px; padding: 4px 10px;">↺ RESTART</button>
+            </div>
+        </header>
+
+        <!-- Dynamic In-Game HUD -->
+        <div class="comic-hud-bar">
+            <span id="hudChapter" class="hud-chapter">Page 1: The Dark Street</span>
+            <span id="hudObjective" class="hud-objective">Kindle all 3 Street Lamps with [SPACE] Flare.</span>
+        </div>
+
+        <!-- 2D Canvas Viewport -->
+        <div class="canvas-container" id="canvasContainer">
+            <canvas id="gameCanvas" width="960" height="640"></canvas>
+        </div>
+
+        <!-- Footer / Attribution -->
+        <footer class="comic-footer-bar">
+            <span>Repo: <a href="https://github.com/coders-16/the-last-light" target="_blank">github.com/coders-16/the-last-light</a></span>
+            <span>Team-3: Divya Shree • Maurya Vujini • Vidyan Sai • Rupaswi Royal Kosana • Manjusha V</span>
+        </footer>
+
+        <!-- TITLE SCREEN OVERLAY -->
+        <div id="titleOverlay" class="overlay-screen">
+            <h1 class="title-banner">THE LAST LIGHT</h1>
+            <p class="title-subheading">"A comic you can play, light you can manipulate, and a story you can't trust."</p>
+
+            <div class="theme-pill-container">
+                <div class="theme-pill">Theme 1: <span>COMIC</span></div>
+                <div class="theme-pill">Theme 2: <span>TWIST</span></div>
+                <div class="theme-pill">Theme 3: <span>LIGHT</span></div>
+            </div>
+
+            <div class="instructions-card">
+                <h3>HOW TO PLAY</h3>
+                <ul>
+                    <li><span class="key-tag">W A S D</span> or <span class="key-tag">ARROWS</span> : Move Lumi (the living spark)</li>
+                    <li><span class="key-tag">SPACE</span> : Unleash Light Flare (Kindles lamps & freezes dark shadows)</li>
+                    <li><span class="key-tag">E</span> or <span class="key-tag">MOUSE CLICK</span> : Interact / Rotate mirrors / Talk to characters</li>
+                    <li>★ Spend light carefully to reveal hidden ink, solve optical mirror puzzles, and uncover the truth.</li>
+                </ul>
+                <div class="team-roster">
+                    <strong>Team-3:</strong> Divya Shree (Lead) • Maurya Vujini (UI/Audio) • Vidyan Sai (Programming) • Rupaswi Royal Kosana (Art) • Manjusha V (Puzzles)
+                </div>
+            </div>
+
+            <button id="startBtn" class="comic-btn" style="font-size: 26px; padding: 10px 42px;">OPEN COMIC BOOK ▶</button>
+        </div>
+
+        <!-- CLIMAX DUAL-CHOICE MODAL -->
+        <div id="choiceModal" class="overlay-screen hidden">
+            <h2 style="font-family: 'Bangers'; font-size: 42px; color: #ffea00; margin-bottom: 12px; letter-spacing: 2px;">
+                THE FINAL DECISION
+            </h2>
+            <p style="max-width: 650px; font-size: 15px; margin-bottom: 20px; line-height: 1.5;">
+                The truth is laid bare: Lumi was not created to fix the blackout. Lumi WAS the sentient lightning surge that triggered it. 
+                Now that you stand at the heart of the city's power grid, how will this comic book end?
+            </p>
+
+            <div class="choice-container">
+                <div class="choice-card card-dawn">
+                    <h3>THE TRUE DAWN</h3>
+                    <p>Discharge the overload into the earth sinks. Allow natural daylight to return to the blinded citizens, gently dissolving your spark with the morning breeze.</p>
+                    <button id="choiceBtnA" class="comic-btn" style="width: 100%;">CHOOSE DAWN ☀️</button>
+                </div>
+
+                <div class="choice-card card-arc">
+                    <h3>THE LIVING ARC</h3>
+                    <p>Embrace the electric surge! Ascend into the city skyline as a superhero sentinel, permanently powering the comic metropolis as "The Living Spark".</p>
+                    <button id="choiceBtnB" class="comic-btn" style="width: 100%; background: #06d6a0;">CHOOSE ARC ⚡</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ENDING OVERLAY -->
+        <div id="endingOverlay" class="overlay-screen hidden">
+            <div class="ending-box">
+                <h2 id="endingTitle" class="ending-title">ENDING REACHED</h2>
+                <div id="endingText" class="ending-text"></div>
+                <div id="endingSubtext" class="ending-subtext"></div>
+                <button onclick="location.reload()" class="comic-btn" style="font-size: 20px; padding: 8px 30px;">PLAY AGAIN ↺</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- JUDGES SHOWCASE & JAM DOCUMENTATION SECTION -->
+    <section class="judge-portal">
+        <nav class="judge-nav-tabs">
+            <button class="tab-btn active" onclick="switchTab('themesTab')">📖 The 3 Jam Themes</button>
+            <button class="tab-btn" onclick="switchTab('areasTab')">🗺️ 4 Playable Areas</button>
+            <button class="tab-btn" onclick="switchTab('teamTab')">👥 Team & Proposal</button>
+            <button class="tab-btn" onclick="switchTab('jamTab')">⚖️ Jam Rules & Deployment</button>
+        </nav>
+
+        <!-- TAB 1: THEMES -->
+        <div id="themesTab" class="portal-content-card">
+            <h2>🏆 How The Three Themes Are Implemented</h2>
+            <p style="color: #a8dadc; font-size: 15px;">
+                Designed specifically for the 100-Hour Indie Connect Game Jam evaluation criteria, integrating all 3 themes directly into core mechanics:
+            </p>
+
+            <div class="portal-grid-3">
+                <div class="theme-card comic">
+                    <h3>Theme 1: COMIC</h3>
+                    <p>
+                        • <strong>Graphic Novel Architecture:</strong> The playable environment is constructed out of printed comic panels with gutter margins and narration caption boxes.<br><br>
+                        • <strong>Dynamic Onomatopoeia:</strong> Every interaction spawns pop-in sound bursts (<code>WHOOSH!</code>, <code>CLICK!</code>, <code>BZZZZT!</code>, <code>FROZEN!</code>) with 3D comic typography.<br><br>
+                        • <strong>Halftone & Ink Aesthetic:</strong> Procedural Ben-Day dot shading, speech bubbles with speaker tails, and fourth-wall-breaking characters.
+                    </p>
+                </div>
+
+                <div class="theme-card light">
+                    <h3>Theme 2: LIGHT</h3>
+                    <p>
+                        • <strong>Living Spark Entity:</strong> You control <em>Lumi</em>, a living ember emitting real-time 2D raytraced radial illumination.<br><br>
+                        • <strong>Optics & Mirror Raycasting:</strong> Projectors cast laser beams that bounce realistically off rotatable 45° mirrors into solar receptors.<br><br>
+                        • <strong>Flare & Energy:</strong> Spending energy with <code>[SPACE]</code> flares light across rooms, kindling dark lamps and subduing shadow entities.
+                    </p>
+                </div>
+
+                <div class="theme-card twist">
+                    <h3>Theme 3: TWIST</h3>
+                    <p>
+                        • <strong>Cognitive Dissonance:</strong> Signs initially reading <em>"NOTHING HAPPENED HERE"</em> warp into <em>"WAIT... THAT'S NOT WHAT HAPPENED. RUN"</em> under light.<br><br>
+                        • <strong>Shadow Identity:</strong> The "monsters" are revealed to be citizens blinded by the disaster, shielding their eyes in horror.<br><br>
+                        • <strong>The Grand Revelation:</strong> Lumi wasn't born to fix the blackout — <strong>Lumi WAS the catastrophic overload itself!</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: AREAS -->
+        <div id="areasTab" class="portal-content-card hidden">
+            <h2>🗺️ The Four Playable Story Areas</h2>
+            <div class="portal-grid-3">
+                <div class="theme-card">
+                    <h3 style="color: #ffd166;">1. The Dark Street</h3>
+                    <p>
+                        Tutorial chapter. Master movement, radial light aura, and spark flare. Meet Mr. Higgins, ignite 3 street lamps, and discover the first glitched billboard.
+                    </p>
+                </div>
+                <div class="theme-card">
+                    <h3 style="color: #06d6a0;">2. The Broken Theatre</h3>
+                    <p>
+                        Optical mirror puzzles. Rotate mirrors to guide the projector beam onto the Stage Sensor. Madame Clara realizes the script is rewriting itself in real time.
+                    </p>
+                </div>
+                <div class="theme-card">
+                    <h3 style="color: #ef476f;">3. The Shadow District</h3>
+                    <p>
+                        Shadow management. Freeze roaming shadow phantoms with light flares. Listen to their dialogue to uncover the truth of the blinding catastrophe.
+                    </p>
+                </div>
+                <div class="theme-card">
+                    <h3 style="color: #a8dadc;">4. The Final Page</h3>
+                    <p>
+                        Fractured panels and reality peel-back. Solve the Singularity Core circuit and choose between <strong>The True Dawn</strong> and <strong>The Living Arc</strong>.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: TEAM -->
+        <div id="teamTab" class="portal-content-card hidden">
+            <h2>👥 Team-3 Roster & Roles</h2>
+            <table class="team-table">
+                <thead>
+                    <tr>
+                        <th>Team Member</th>
+                        <th>Role & Contribution</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Divya Shree</strong></td>
+                        <td>Team Lead • Game direction, narrative design, gameplay systems integration</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Maurya Vujini</strong></td>
+                        <td>UI design, comic dialogue architecture, Web Audio coordination & QA</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Vidyan Sai</strong></td>
+                        <td>Core programming, 2D raycasting lighting, mirror reflection systems, particle engine</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Rupaswi Royal Kosana</strong></td>
+                        <td>Art direction, comic panel layouts, halftone textures, onomatopoeia visual assets</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Manjusha V</strong></td>
+                        <td>Level progression, optical puzzle design, pacing and gameplay testing</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- TAB 4: JAM COMPLIANCE -->
+        <div id="jamTab" class="portal-content-card hidden">
+            <h2>⚖️ Jam Rules Compliance & Instant Deployment</h2>
+            <p style="color: #d1d5db; line-height: 1.6; margin-bottom: 14px;">
+                • <strong>Fresh Codebase:</strong> Built entirely during the 100-Hour Indie Connect Game Jam.<br>
+                • <strong>Zero Paid Assets:</strong> 100% open-source / procedural Web Audio synthesizer and custom canvas graphics.<br>
+                • <strong>Public Repository:</strong> Open-source MIT licensed at <code>github.com/coders-16/the-last-light</code>.<br>
+                • <strong>Instant Itch.io / GitHub Pages Hosting:</strong> Runs instantly in any standard browser without installation or plugins.
+            </p>
+            <a href="the-last-light-web-build.zip" download class="download-pill-btn">
+                📦 DOWNLOAD ITCH.IO READY ZIP (the-last-light-web-build.zip)
+            </a>
+        </div>
+    </section>
+
+    <!-- SCRIPT INCLUDES -->
+    <script src="js/engine/audio.js"></script>
+    <script src="js/engine/particles.js"></script>
+    <script src="js/engine/lighting.js"></script>
+    <script src="js/comic/comic_fx.js"></script>
+    <script src="js/comic/dialogue.js"></script>
+    <script src="js/engine/input.js"></script>
+    <script src="js/gameplay/entities.js"></script>
+    <script src="js/gameplay/levels.js"></script>
+    <script src="js/gameplay/game.js"></script>
+
+    <!-- TAB SWITCHER & FULLSCREEN CONTROLLER -->
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.portal-content-card').forEach(card => card.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            const target = document.getElementById(tabId);
+            if (target) target.classList.remove('hidden');
+            if (event && event.target) event.target.classList.add('active');
+        }
+
+        const fsBtn = document.getElementById('fullscreenBtn');
+        if (fsBtn) {
+            fsBtn.addEventListener('click', () => {
+                const elem = document.getElementById('canvasContainer') || document.getElementById('gameCanvas');
+                if (!document.fullscreenElement) {
+                    if (elem.requestFullscreen) elem.requestFullscreen();
+                    else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
+                    fsBtn.innerText = '⛶ EXIT FULLSCREEN';
+                } else {
+                    if (document.exitFullscreen) document.exitFullscreen();
+                    fsBtn.innerText = '⛶ FULLSCREEN';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
