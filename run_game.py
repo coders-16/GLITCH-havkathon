@@ -10,7 +10,7 @@ import webbrowser
 import os
 import sys
 
-PORT = 8080
+PORT = 8000
 
 def run():
     web_dir = os.path.dirname(os.path.abspath(__file__))
@@ -23,7 +23,7 @@ def run():
     
     try:
         with socketserver.TCPServer(("", PORT), Handler) as httpd:
-            url = f"http://localhost:{PORT}/index.html"
+            url = f"http://localhost:{PORT}/"
             print("=" * 60)
             print("  ⚡ THE LAST LIGHT - 100-Hour Indie Connect Game Jam")
             print("  ★ Theme 1: Comic | Theme 2: Twist | Theme 3: Light")
